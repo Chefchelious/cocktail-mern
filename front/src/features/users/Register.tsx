@@ -8,7 +8,6 @@ import { RegisterMutation } from '../../types';
 import { selectRegisterError, selectRegisterLoading } from './usersSlice.ts';
 import { register } from './usersThunk.ts';
 import FileInput from '../../components/UI/FileInput/FileInput.tsx';
-import './styles/Register.css';
 
 const Register = () => {
   const dispatch = useAppDispatch();
@@ -82,11 +81,11 @@ const Register = () => {
                 required
                 label="email"
                 name="email"
-                autoComplete="new-username"
+                autoComplete="new-email"
                 value={state.email}
                 onChange={inputChangeHandler}
-                error={!!getFieldError('username')}
-                helperText={getFieldError('username')}
+                error={!!getFieldError('email')}
+                helperText={getFieldError('email')}
               />
             </Grid>
             <Grid item xs={12}>

@@ -10,6 +10,9 @@ const imageStorage = multer.diskStorage({
     if (_file.fieldname === 'avatar') {
       dir += 'avatars';
     }
+    if (_file.fieldname === 'cocktailImage') {
+      dir += 'cocktailImages';
+    }
     // const dir = 'images/' + _file.fieldname;
     const destDir = path.join(config.publicPath, dir);
     await fs.mkdir(destDir, { recursive: true });
@@ -20,6 +23,9 @@ const imageStorage = multer.diskStorage({
 
     if (file.fieldname === 'avatar') {
       fileName += 'avatars';
+    }
+    if (file.fieldname === 'cocktailImage') {
+      fileName += 'cocktailImages';
     }
 
     const extension = path.extname(file.originalname);

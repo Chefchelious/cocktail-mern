@@ -5,5 +5,19 @@ export interface IUser {
   token: string;
   displayName: string;
   googleId?: string;
-  avatar: string | null;
+  avatar: string;
+}
+
+export interface IIngredient {
+  name: string;
+  amount: string;
+}
+
+export interface ICocktail {
+  author: Object._id;
+  name: string;
+  cocktailImage: string;
+  recipe: string;
+  isPublished: boolean;
+  ingredients: IIngredient[];
 }

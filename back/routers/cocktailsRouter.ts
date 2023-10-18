@@ -4,11 +4,26 @@ import { imagesUpload } from '../multer';
 import Cocktail from '../models/Cocktail';
 import mongoose from 'mongoose';
 import permit from '../middlewares/permit';
+import User from '../models/User';
 
 const cocktailsRouter = express.Router();
 
-cocktailsRouter.get('/', async (req, res, next) => {
-  return res.send({ message: 'all cocktails will be here' });
+cocktailsRouter.get('/', async (req, res) => {
+  try {
+    const token = req.get('Authorization');
+    const user = await User.findOne({ token });
+    if (user && req.query.author === 'true') {
+      return res.send(await Cocktail.find({ author: user._id }, '-author -recipe -ingredients'));
+    }
+
+    if (user && req.query.admin === 'true' && user.role === 'admin') {
+      return res.send(await Cocktail.find({}, '-author -recipe -ingredients'));
+    }
+
+    return res.send(await Cocktail.find({ isPublished: true }, '-author -recipe -ingredients'));
+  } catch (e) {
+    return res.sendStatus(500);
+  }
 });
 
 cocktailsRouter.post('/', auth, imagesUpload.single('cocktailImage'), async (req, res, next) => {

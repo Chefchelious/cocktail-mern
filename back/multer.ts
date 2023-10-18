@@ -13,7 +13,7 @@ const imageStorage = multer.diskStorage({
     if (_file.fieldname === 'cocktailImage') {
       dir += 'cocktailImages';
     }
-    // const dir = 'images/' + _file.fieldname;
+
     const destDir = path.join(config.publicPath, dir);
     await fs.mkdir(destDir, { recursive: true });
     cb(null, config.publicPath);

@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
-import { IIngredient, TCocktailMutation } from '../../../types';
+import { ICocktailMutation, IIngredient, TCocktailMutation } from '../../../types';
 import { Button, Container, Grid, TextField } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import LoadingButton from '@mui/lab/LoadingButton';
 import FileInput from '../../../components/UI/FileInput/FileInput';
+import { useAppDispatch, useAppSelector } from '../../../app/hook.ts';
+import { useNavigate } from 'react-router-dom';
+import { selectCreateCocktailLoading } from '../cocktailsSlice.ts';
+import { createCocktail } from '../cocktailsThunk.ts';
 
 const CocktailForm = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const loading = useAppSelector(selectCreateCocktailLoading);
+
   const [state, setState] = useState<TCocktailMutation>({
     name: '',
     recipe: '',
@@ -14,17 +22,20 @@ const CocktailForm = () => {
 
   const [ingredients, setIngredients] = useState<IIngredient[]>([{ name: '', amount: '' }]);
 
-  const submitFormHandler = (e: React.FormEvent) => {
+  const submitFormHandler = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!state.cocktailImage) {
-      alert('Cocktail image required!');
-    }
-
-    console.log({
+    const data: ICocktailMutation = {
       ...state,
       ingredients,
-    });
+    };
+
+    try {
+      await dispatch(createCocktail(data));
+      navigate('/');
+    } catch (e) {
+      alert('Invalid field');
+    }
   };
 
   const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -148,7 +159,7 @@ const CocktailForm = () => {
               endIcon={<SendIcon />}
               loadingPosition="end"
               variant="contained"
-              // loading={loading}
+              loading={loading}
             >
               <span>Send</span>
             </LoadingButton>

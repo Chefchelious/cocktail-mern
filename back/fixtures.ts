@@ -118,7 +118,7 @@ const run = async () => {
       author: user_1._id,
       name: 'Godmother',
       recipe: 'Pour vodka and amaretto into an old-fashioned glass over ice and serve.',
-      cocktailImage: 'fixtures/godFather.jpg',
+      cocktailImage: 'fixtures/godMother.jpg',
       isPublished: true,
       ingredients: [
         {

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axiosApi from '../../axiosApi.ts';
-import { ICocktail } from '../../types';
+import { ICocktail, ICocktailMutation } from '../../types';
 
 interface IFetchQueries {
   admin: 'true' | '';
@@ -15,5 +15,31 @@ export const fetchCocktails = createAsyncThunk<ICocktail[], IFetchQueries>(
     );
 
     return cocktailsResponse.data;
+  },
+);
+
+export const createCocktail = createAsyncThunk<void, ICocktailMutation>(
+  'cocktails/create',
+  async (cocktail) => {
+    const formData = new FormData();
+
+    const keys = Object.keys(cocktail) as (keyof ICocktailMutation)[];
+
+    keys.forEach((key) => {
+      const value = cocktail[key];
+
+      if (value !== null) {
+        if (key === 'ingredients') {
+          cocktail.ingredients.forEach((ing, idx) => {
+            formData.append(`ingredients[${idx}][name]`, ing.name);
+            formData.append(`ingredients[${idx}][amount]`, ing.amount);
+          });
+        } else {
+          formData.append(key, value as string | File);
+        }
+      }
+    });
+
+    await axiosApi.post('/cocktails', formData);
   },
 );

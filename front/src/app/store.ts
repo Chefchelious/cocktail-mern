@@ -11,6 +11,7 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { usersReducer } from '../features/users/usersSlice.ts';
+import { cocktailsReducer } from '../features/cocktails/cocktailsSlice.ts';
 
 const usersPersistConfig = {
   key: 'chink:users',
@@ -20,6 +21,7 @@ const usersPersistConfig = {
 
 const rootReducer = combineReducers({
   users: persistReducer(usersPersistConfig, usersReducer),
+  cocktails: cocktailsReducer,
 });
 
 export const store = configureStore({

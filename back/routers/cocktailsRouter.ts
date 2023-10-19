@@ -20,7 +20,7 @@ cocktailsRouter.get('/', async (req, res) => {
       return res.send(await Cocktail.find({}, '-author -recipe -ingredients'));
     }
 
-    return res.send(await Cocktail.find({ isPublished: true }, '-author -recipe -ingredients'));
+    return res.send(await Cocktail.find({ isPublished: true }, '-author -recipe -ingredients -isPublished'));
   } catch (e) {
     return res.sendStatus(500);
   }

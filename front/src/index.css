@@ -18,11 +18,12 @@ body {
   background-size: cover;
   font-size: 20px;
   color: white !important;
-  font-family: 'Caveat', cursive;
+  font-family: 'Caveat', cursive !important;
+  height: 100vh;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-family: 'Caveat', cursive !important;
 }
 
 .container {

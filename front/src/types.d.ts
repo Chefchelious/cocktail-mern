@@ -39,3 +39,9 @@ export interface ValidationError {
 export interface GlobalError {
   error: string;
 }
+
+export interface ICocktail {
+  _id: string;
+  name: string;
+  cocktailImage: string;
+}

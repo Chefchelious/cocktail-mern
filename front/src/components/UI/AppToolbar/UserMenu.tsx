@@ -3,6 +3,7 @@ import { Avatar, Button, Grid, Menu, MenuItem } from '@mui/material';
 import { useAppDispatch } from '../../../app/hook';
 import { IUser } from '../../../types';
 import { logout } from '../../../features/users/usersThunk.ts';
+import { Link } from 'react-router-dom';
 
 interface Props {
   user: IUser;
@@ -33,7 +34,12 @@ const UserMenu: React.FC<Props> = ({ user }) => {
       </Button>
       <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
         <MenuItem>Profile</MenuItem>
-        <MenuItem>My account</MenuItem>
+        <MenuItem component={Link} to="/add_cocktail" onClick={handleClose}>
+          add cocktail
+        </MenuItem>
+        <MenuItem component={Link} to="/my_cocktails" onClick={handleClose}>
+          my cocktails
+        </MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </Grid>

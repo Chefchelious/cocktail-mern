@@ -31,6 +31,12 @@
   background-color: rgba(114, 14, 229, 0.64);
   padding: 0 8px;
   border-top-right-radius: 10px;
+  transform: translateX(-100%);
+  transition: transform 0.50s ease-in-out;
+}
+
+.card:hover .card__body {
+  transform: translateX(0);
 }
 
 .card__title {

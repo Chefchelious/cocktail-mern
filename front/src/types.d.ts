@@ -45,3 +45,17 @@ export interface ICocktail {
   name: string;
   cocktailImage: string;
 }
+
+export interface IIngredient {
+  name: string;
+  amount: string;
+}
+
+export interface ICocktailMutation {
+  name: string;
+  cocktailImage: File | null;
+  recipe: string;
+  ingredients: IIngredient[];
+}
+
+export type TCocktailMutation = Omit<ICocktailMutation, 'ingredients'>;

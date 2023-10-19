@@ -5,8 +5,13 @@ import { Route, Routes } from 'react-router-dom';
 import Register from './features/users/Register.tsx';
 import Login from './features/users/Login.tsx';
 import CocktailList from './features/cocktails/CocktailList.tsx';
+import NewCocktail from './features/cocktails/components/NewCocktail.tsx';
+import ProtectedRoute from './components/UI/ProtectedRoute/ProtectedRoute.tsx';
+import { useAppSelector } from './app/hook.ts';
+import { selectUser } from './features/users/usersSlice.ts';
 
 const App = () => {
+  const user = useAppSelector(selectUser);
   return (
     <>
       <CssBaseline />
@@ -19,6 +24,15 @@ const App = () => {
         <Container maxWidth="xl">
           <Routes>
             <Route path="/" element={<CocktailList />} />
+
+            <Route
+              path="/add_cocktail"
+              element={
+                <ProtectedRoute isAllowed={!!user}>
+                  <NewCocktail />
+                </ProtectedRoute>
+              }
+            />
 
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />

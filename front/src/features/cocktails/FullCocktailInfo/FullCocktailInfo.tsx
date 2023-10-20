@@ -1,22 +1,45 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/hook.ts';
-import { selectFetchOneCocktailLoading, selectOneCocktail } from '../cocktailsSlice.ts';
-import { fetchOneCocktail } from '../cocktailsThunk.ts';
+import { LoadingButton } from '@mui/lab';
+import {
+  selectDeleteCocktailLoading,
+  selectFetchOneCocktailLoading,
+  selectOneCocktail,
+  selectPublishCocktailLoading,
+} from '../cocktailsSlice.ts';
+import { deleteCocktail, fetchOneCocktail, toggleCocktailPublished } from '../cocktailsThunk.ts';
 import Spinner from '../../../components/UI/Spinner/Spinner.tsx';
 import { apiUrl } from '../../../constants.ts';
 import StarRating from '../../../components/UI/StarRating/StarRating.tsx';
+import { selectUser } from '../../users/usersSlice.ts';
 import './FullCocktailInfo.css';
 
 const FullCocktailInfo = () => {
   const { id } = useParams() as { id: string };
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const cocktail = useAppSelector(selectOneCocktail);
   const loading = useAppSelector(selectFetchOneCocktailLoading);
+  const user = useAppSelector(selectUser);
+  const publishLoading = useAppSelector(selectPublishCocktailLoading);
+  const deleteLoading = useAppSelector(selectDeleteCocktailLoading);
 
   useEffect(() => {
     dispatch(fetchOneCocktail(id));
   }, [dispatch, id]);
+
+  const publishCocktail = async () => {
+    await dispatch(toggleCocktailPublished(id));
+    navigate('/cocktails/my_cocktails');
+  };
+
+  const handleDeleteCocktail = async () => {
+    if (window.confirm('Do you really want to delete this publication?')) {
+      await dispatch(deleteCocktail(id));
+      navigate('/cocktails/my_cocktails');
+    }
+  };
 
   let content: React.ReactNode | null = null;
 
@@ -57,6 +80,17 @@ const FullCocktailInfo = () => {
             ))}
           </ul>
         </div>
+
+        {user && user.role === 'admin' && (
+          <div>
+            <LoadingButton onClick={handleDeleteCocktail} color="secondary" loading={deleteLoading}>
+              <span>remove</span>
+            </LoadingButton>
+            <LoadingButton onClick={publishCocktail} loading={publishLoading}>
+              <span>{cocktail.isPublished ? 'unpublish' : 'publish'}</span>
+            </LoadingButton>
+          </div>
+        )}
 
         <div className="cocktail__recipe">{cocktail.recipe}</div>
       </div>

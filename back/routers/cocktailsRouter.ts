@@ -22,7 +22,7 @@ cocktailsRouter.get('/', async (req, res) => {
     if (user && req.query.admin === 'true' && user.role === 'admin') {
       return res.send(await Cocktail.find({}, '-author -recipe -ingredients'));
     }
-    console.log('yes');
+
     return res.send(
       await Cocktail.find({ isPublished: true }, '-author -recipe -ingredients -isPublished'),
     );

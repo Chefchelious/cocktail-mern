@@ -32,6 +32,7 @@ const CocktailForm = () => {
 
     try {
       await dispatch(createCocktail(data));
+      alert('your post has been submitted for moderation');
       navigate('/');
     } catch (e) {
       alert('Invalid field');

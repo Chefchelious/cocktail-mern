@@ -1,18 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store.ts';
-import { createCocktail, fetchCocktails } from './cocktailsThunk.ts';
-import { ICocktail } from '../../types';
+import { createCocktail, fetchCocktails, fetchOneCocktail } from './cocktailsThunk.ts';
+import { IApiCocktail, ICocktail } from '../../types';
 
 interface CocktailsState {
   items: ICocktail[];
   fetchLoading: boolean;
   createLoading: boolean;
+  oneCocktail: IApiCocktail | null;
+  fetchOneLoading: boolean;
 }
 
 const initialState: CocktailsState = {
   items: [],
   fetchLoading: false,
   createLoading: false,
+  oneCocktail: null,
+  fetchOneLoading: false,
 };
 
 const cocktailSlice = createSlice({
@@ -42,6 +46,18 @@ const cocktailSlice = createSlice({
       .addCase(createCocktail.rejected, (state) => {
         state.createLoading = false;
       });
+
+    builder
+      .addCase(fetchOneCocktail.pending, (state) => {
+        state.fetchOneLoading = true;
+      })
+      .addCase(fetchOneCocktail.fulfilled, (state, { payload: cocktail }) => {
+        state.fetchOneLoading = false;
+        state.oneCocktail = cocktail;
+      })
+      .addCase(fetchOneCocktail.rejected, (state) => {
+        state.fetchOneLoading = false;
+      });
   },
 });
 
@@ -49,3 +65,5 @@ export const cocktailsReducer = cocktailSlice.reducer;
 export const selectCocktails = (state: RootState) => state.cocktails.items;
 export const selectCocktailsLoading = (state: RootState) => state.cocktails.fetchLoading;
 export const selectCreateCocktailLoading = (state: RootState) => state.cocktails.createLoading;
+export const selectOneCocktail = (state: RootState) => state.cocktails.oneCocktail;
+export const selectFetchOneCocktailLoading = (state: RootState) => state.cocktails.fetchOneLoading;

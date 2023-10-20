@@ -46,6 +46,11 @@ export interface ICocktail {
   cocktailImage: string;
 }
 
+export interface IApiCocktail extends ICocktail {
+  recipe: string;
+  ingredients: IIngredient[];
+}
+
 export interface IIngredient {
   name: string;
   amount: string;

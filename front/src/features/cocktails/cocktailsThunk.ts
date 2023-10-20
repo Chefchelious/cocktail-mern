@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axiosApi from '../../axiosApi.ts';
-import { ICocktail, ICocktailMutation } from '../../types';
+import { IApiCocktail, ICocktail, ICocktailMutation } from '../../types';
 
 interface IFetchQueries {
   admin: 'true' | '';
@@ -41,5 +41,14 @@ export const createCocktail = createAsyncThunk<void, ICocktailMutation>(
     });
 
     await axiosApi.post('/cocktails', formData);
+  },
+);
+
+export const fetchOneCocktail = createAsyncThunk<IApiCocktail, string>(
+  'cocktails/fetchOne',
+  async (id) => {
+    const { data } = await axiosApi<IApiCocktail>(`/cocktails/${id}`);
+
+    return data;
   },
 );

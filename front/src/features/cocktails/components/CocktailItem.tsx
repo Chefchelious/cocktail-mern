@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { apiUrl } from '../../../constants.ts';
 import { ICocktail } from '../../../types';
 
@@ -8,7 +9,7 @@ interface IProps {
 
 const CocktailItem: React.FC<IProps> = ({ cocktail }) => {
   return (
-    <div className="card">
+    <Link to={`/cocktails/${cocktail._id}`} className="card" style={{ color: 'white' }}>
       <div className="card__img-wrapper">
         <img
           className="card__img"
@@ -19,7 +20,7 @@ const CocktailItem: React.FC<IProps> = ({ cocktail }) => {
       <div className="card__body">
         <h3 className="card__title">{cocktail.name}</h3>
       </div>
-    </div>
+    </Link>
   );
 };
 

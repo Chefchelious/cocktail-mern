@@ -1,0 +1,55 @@
+.cocktail {
+  background-color: rgba(35, 4, 35, 0.66);
+  border-radius: 15px;
+  padding: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.cocktail__left-col {
+overflow: hidden;
+}
+
+.cocktail__img {
+  width: 300px;
+  height: auto;
+  vertical-align: top;
+  border-radius: 10px;
+}
+
+.cocktail__right-col {
+  font-size: 25px;
+}
+
+.cocktail__title {
+  font-size: 40px;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.cocktail__title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  width: 80%;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.76);
+}
+
+.cocktail__right-col span, .cocktail__rating {
+  text-decoration: underline;
+}
+
+.ingredients-list {
+  list-style: circle;
+  margin-left: 20px;
+}
+
+.cocktail__recipe {
+  color: #0ae3ff;
+  width: 100%;
+  font-size: 23px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}

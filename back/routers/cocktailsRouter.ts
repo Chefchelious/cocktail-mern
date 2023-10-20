@@ -15,7 +15,6 @@ cocktailsRouter.get('/', async (req, res) => {
     const user = await User.findOne({ token });
 
     if (user && req.query.author === 'true') {
-      console.log('no');
       return res.send(await Cocktail.find({ author: user._id }, '-author -recipe -ingredients'));
     }
 

@@ -26,35 +26,47 @@ const MyCocktails = () => {
 
   const publishHandler = (filter: boolean) => setPublishFilter(filter);
 
-  return loading ? (
-    <Spinner />
-  ) : (
-    <>
-      <div className="btns">
-        <Button
-          onClick={() => publishHandler(true)}
-          variant={publishFilter ? 'contained' : 'text'}
-          color="success"
-        >
-          Published
-        </Button>
-        <Button
-          onClick={() => publishHandler(false)}
-          variant={!publishFilter ? 'contained' : 'text'}
-          color="warning"
-        >
-          Unpublished
-        </Button>
-      </div>
-      <div className="cards">
-        {cocktails
-          .filter((c) => c.isPublished === publishFilter)
-          .map((c) => (
-            <CocktailItem key={c._id} cocktail={c} />
-          ))}
-      </div>
-    </>
-  );
+  let content: React.ReactNode | null;
+
+  if (loading) {
+    content = <Spinner />;
+  }
+
+  if (!cocktails.length) {
+    content = <h3>you have no publications yet</h3>;
+  }
+
+  if (cocktails.length) {
+    content = (
+      <>
+        <div className="btns">
+          <Button
+            onClick={() => publishHandler(true)}
+            variant={publishFilter ? 'contained' : 'text'}
+            color="success"
+          >
+            Published
+          </Button>
+          <Button
+            onClick={() => publishHandler(false)}
+            variant={!publishFilter ? 'contained' : 'text'}
+            color="warning"
+          >
+            Unpublished
+          </Button>
+        </div>
+        <div className="cards">
+          {cocktails
+            .filter((c) => c.isPublished === publishFilter)
+            .map((c) => (
+              <CocktailItem key={c._id} cocktail={c} />
+            ))}
+        </div>
+      </>
+    );
+  }
+
+  return content;
 };
 
 export default MyCocktails;

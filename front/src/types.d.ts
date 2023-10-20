@@ -44,6 +44,7 @@ export interface ICocktail {
   _id: string;
   name: string;
   cocktailImage: string;
+  isPublished: boolean;
 }
 
 export interface IApiCocktail extends ICocktail {

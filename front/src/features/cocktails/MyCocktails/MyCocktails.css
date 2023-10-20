@@ -1,0 +1,9 @@
+.btns {
+ display: flex;
+  gap: 20px;
+  margin: 0 auto 20px;
+  background-color: rgba(56, 11, 133, 0.49);
+  width: min-content;
+  padding: 15px;
+  border-radius: 5px;
+}

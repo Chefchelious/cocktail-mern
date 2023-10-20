@@ -1,16 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hook.ts';
 import { selectCocktails, selectCocktailsLoading } from '../cocktailsSlice.ts';
 import { fetchCocktails } from '../cocktailsThunk.ts';
 import CocktailItem from '../components/CocktailItem.tsx';
 import Spinner from '../../../components/UI/Spinner/Spinner.tsx';
 import { selectUser } from '../../users/usersSlice.ts';
+import { Button } from '@mui/material';
+import './MyCocktails.css';
 
 const MyCocktails = () => {
   const dispatch = useAppDispatch();
   const cocktails = useAppSelector(selectCocktails);
   const loading = useAppSelector(selectCocktailsLoading);
   const user = useAppSelector(selectUser);
+  const [publishFilter, setPublishFilter] = useState(true);
 
   useEffect(() => {
     dispatch(
@@ -21,14 +24,36 @@ const MyCocktails = () => {
     );
   }, [dispatch, user]);
 
+  const publishHandler = (filter: boolean) => setPublishFilter(filter);
+
   return loading ? (
     <Spinner />
   ) : (
-    <div className="cards">
-      {cocktails.map((c) => (
-        <CocktailItem key={c._id} cocktail={c} />
-      ))}
-    </div>
+    <>
+      <div className="btns">
+        <Button
+          onClick={() => publishHandler(true)}
+          variant={publishFilter ? 'contained' : 'text'}
+          color="success"
+        >
+          Published
+        </Button>
+        <Button
+          onClick={() => publishHandler(false)}
+          variant={!publishFilter ? 'contained' : 'text'}
+          color="warning"
+        >
+          Unpublished
+        </Button>
+      </div>
+      <div className="cards">
+        {cocktails
+          .filter((c) => c.isPublished === publishFilter)
+          .map((c) => (
+            <CocktailItem key={c._id} cocktail={c} />
+          ))}
+      </div>
+    </>
   );
 };
 

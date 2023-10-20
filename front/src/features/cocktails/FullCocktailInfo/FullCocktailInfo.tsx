@@ -5,6 +5,7 @@ import { selectFetchOneCocktailLoading, selectOneCocktail } from '../cocktailsSl
 import { fetchOneCocktail } from '../cocktailsThunk.ts';
 import Spinner from '../../../components/UI/Spinner/Spinner.tsx';
 import { apiUrl } from '../../../constants.ts';
+import StarRating from '../../../components/UI/StarRating/StarRating.tsx';
 import './FullCocktailInfo.css';
 
 const FullCocktailInfo = () => {
@@ -27,11 +28,17 @@ const FullCocktailInfo = () => {
     content = (
       <div className="cocktail">
         <div className="cocktail__left-col">
-          <img
-            className="cocktail__img"
-            src={apiUrl + '/' + cocktail.cocktailImage}
-            alt={cocktail?.name}
-          />
+          <div className="cocktail__img-wrap">
+            <img
+              className="cocktail__img"
+              src={apiUrl + '/' + cocktail.cocktailImage}
+              alt={cocktail?.name}
+            />
+          </div>
+
+          <div style={{ marginTop: '20px' }}>
+            <StarRating />
+          </div>
         </div>
 
         <div className="cocktail__right-col">

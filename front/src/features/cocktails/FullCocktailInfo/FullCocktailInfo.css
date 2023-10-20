@@ -7,8 +7,12 @@
   gap: 30px;
 }
 
-.cocktail__left-col {
-overflow: hidden;
+/*.cocktail__left-col {*/
+/*overflow: hidden;*/
+/*}*/
+
+.cocktail__img-wrap {
+  overflow: hidden;
 }
 
 .cocktail__img {

@@ -37,7 +37,7 @@ const UserMenu: React.FC<Props> = ({ user }) => {
         <MenuItem component={Link} to="/add_cocktail" onClick={handleClose}>
           add cocktail
         </MenuItem>
-        <MenuItem component={Link} to="/my_cocktails" onClick={handleClose}>
+        <MenuItem component={Link} to="/cocktails/my_cocktails" onClick={handleClose}>
           my cocktails
         </MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>

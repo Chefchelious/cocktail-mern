@@ -11,15 +11,18 @@ const cocktailsRouter = express.Router();
 cocktailsRouter.get('/', async (req, res) => {
   try {
     const token = req.get('Authorization');
+
     const user = await User.findOne({ token });
+
     if (user && req.query.author === 'true') {
+      console.log('no');
       return res.send(await Cocktail.find({ author: user._id }, '-author -recipe -ingredients'));
     }
 
     if (user && req.query.admin === 'true' && user.role === 'admin') {
       return res.send(await Cocktail.find({}, '-author -recipe -ingredients'));
     }
-
+    console.log('yes');
     return res.send(
       await Cocktail.find({ isPublished: true }, '-author -recipe -ingredients -isPublished'),
     );

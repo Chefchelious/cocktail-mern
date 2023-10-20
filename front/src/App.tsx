@@ -10,6 +10,7 @@ import ProtectedRoute from './components/UI/ProtectedRoute/ProtectedRoute.tsx';
 import { useAppSelector } from './app/hook.ts';
 import { selectUser } from './features/users/usersSlice.ts';
 import FullCocktailInfo from './features/cocktails/FullCocktailInfo/FullCocktailInfo.tsx';
+import MyCocktails from './features/cocktails/MyCocktails/MyCocktails.tsx';
 
 const App = () => {
   const user = useAppSelector(selectUser);
@@ -36,6 +37,8 @@ const App = () => {
             />
 
             <Route path="/cocktails/:id" element={<FullCocktailInfo />} />
+
+            <Route path="/cocktails/my_cocktails" element={<MyCocktails />} />
 
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />

@@ -12,7 +12,7 @@ const CocktailList = () => {
   const loading = useAppSelector(selectCocktailsLoading);
 
   useEffect(() => {
-    dispatch(fetchCocktails({ user: '', admin: '' }));
+    dispatch(fetchCocktails({ author: '', admin: '' }));
   }, [dispatch]);
 
   return loading ? (

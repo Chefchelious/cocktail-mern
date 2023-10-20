@@ -4,14 +4,14 @@ import { IApiCocktail, ICocktail, ICocktailMutation } from '../../types';
 
 interface IFetchQueries {
   admin: 'true' | '';
-  user: 'true' | '';
+  author: 'true' | '';
 }
 
 export const fetchCocktails = createAsyncThunk<ICocktail[], IFetchQueries>(
   'cocktails/fetchCocktails',
   async (queries: IFetchQueries) => {
     const cocktailsResponse = await axiosApi<ICocktail[]>(
-      `/cocktails?user=${queries.user}&admin=${queries.admin}`,
+      `/cocktails?author=${queries.author}&admin=${queries.admin}`,
     );
 
     return cocktailsResponse.data;

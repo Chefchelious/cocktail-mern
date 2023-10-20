@@ -276,7 +276,7 @@ const run = async () => {
       name: 'Tequila Sunrise',
       recipe:
         'Pour the tequila and orange juice into glass over ice. Add the grenadine, which will sink to the bottom. Stir gently to create the sunrise effect. Garnish and serve.',
-      cocktailImage: 'tequila-sunrise.jpg',
+      cocktailImage: 'fixtures/tequila-sunrise.jpg',
       ingredients: [
         {
           name: 'Tequila',
@@ -297,7 +297,7 @@ const run = async () => {
       name: 'white-russian',
       recipe:
         'Pour vodka and coffee liqueur over ice cubes in an old-fashioned glass. Fill with light cream and serve.',
-      cocktailImage: 'tequila-sunrise.jpg',
+      cocktailImage: 'fixtures/white-russian.jpg',
       ingredients: [
         {
           name: 'Vodka',

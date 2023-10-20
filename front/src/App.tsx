@@ -38,7 +38,14 @@ const App = () => {
 
             <Route path="/cocktails/:id" element={<FullCocktailInfo />} />
 
-            <Route path="/cocktails/my_cocktails" element={<MyCocktails />} />
+            <Route
+              path="/cocktails/my_cocktails"
+              element={
+                <ProtectedRoute isAllowed={!!user}>
+                  <MyCocktails />
+                </ProtectedRoute>
+              }
+            />
 
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />

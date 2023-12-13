@@ -98,4 +98,38 @@ cocktailsRouter.patch('/:id/togglePublished', auth, permit('admin'), async (req,
   }
 });
 
+cocktailsRouter.patch('/:id/toggleRating', auth, async (req, res, next) => {
+  try {
+    const user = (req as IRequestWithUser).user;
+    const cocktail = await Cocktail.findOne({ _id: req.params.id });
+
+    if (!cocktail) {
+      return res.status(404).send({ error: 'Not found' });
+    }
+
+    const rating = parseFloat(req.body.rate);
+
+    if (isNaN(rating) || rating < 0 || rating > 5) {
+      return res.status(400).send({ error: 'Rating must be a number between 0 and 5' });
+    }
+
+    const userRatingIndex = cocktail.ratings.findIndex((rating) => rating.author.equals(user._id));
+
+    if (userRatingIndex !== -1) {
+      if (rating === 0) {
+        cocktail.ratings.splice(userRatingIndex, 1);
+      } else {
+        cocktail.ratings[userRatingIndex].rate = rating;
+      }
+    } else if (rating > 0) {
+      cocktail.ratings.push({ author: user._id, rate: rating });
+    }
+
+    await cocktail.save();
+    return res.send(cocktail);
+  } catch (e) {
+    return next(e);
+  }
+});
+
 export default cocktailsRouter;

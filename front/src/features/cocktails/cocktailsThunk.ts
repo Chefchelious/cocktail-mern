@@ -63,3 +63,15 @@ export const toggleCocktailPublished = createAsyncThunk<void, string>(
 export const deleteCocktail = createAsyncThunk<void, string>('cocktails/deleteOne', async (id) => {
   await axiosApi.delete(`/cocktails/${id}`);
 });
+
+interface IRatingParams {
+  id: string;
+  rate: number;
+}
+
+export const rateCocktail = createAsyncThunk<void, IRatingParams>(
+  'cocktails/rateOne',
+  async (RatingParams) => {
+    await axiosApi.patch(`/cocktails/${RatingParams.id}/toggleRating`, { rate: RatingParams.rate });
+  },
+);

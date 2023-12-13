@@ -7,12 +7,15 @@ import {
   selectFetchOneCocktailLoading,
   selectOneCocktail,
   selectPublishCocktailLoading,
+  // setCocktail,
 } from '../cocktailsSlice.ts';
 import { deleteCocktail, fetchOneCocktail, toggleCocktailPublished } from '../cocktailsThunk.ts';
 import Spinner from '../../../components/UI/Spinner/Spinner.tsx';
 import { apiUrl } from '../../../constants.ts';
 import StarRating from '../../../components/UI/StarRating/StarRating.tsx';
 import { selectUser } from '../../users/usersSlice.ts';
+import { AnimatePresence, motion } from 'framer-motion';
+import { IRating } from '../../../types';
 import './FullCocktailInfo.css';
 
 const FullCocktailInfo = () => {
@@ -26,8 +29,18 @@ const FullCocktailInfo = () => {
   const deleteLoading = useAppSelector(selectDeleteCocktailLoading);
 
   useEffect(() => {
+    // dispatch(setCocktail());
     dispatch(fetchOneCocktail(id));
   }, [dispatch, id]);
+
+  const variants = {
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { staggerChildren: 0.2 },
+    },
+    hidden: { opacity: 0, x: -50 },
+  };
 
   const publishCocktail = async () => {
     await dispatch(toggleCocktailPublished(id));
@@ -48,6 +61,10 @@ const FullCocktailInfo = () => {
   }
 
   if (cocktail) {
+    const userRating: IRating | undefined = cocktail.ratings.find(
+      (rate) => rate.author === user?._id,
+    );
+
     content = (
       <div className="cocktail">
         <div className="cocktail__left-col">
@@ -59,26 +76,43 @@ const FullCocktailInfo = () => {
             />
           </div>
 
-          <div style={{ marginTop: '20px' }}>
-            <StarRating />
-          </div>
+          {user && (
+            <div style={{ marginTop: '20px' }}>
+              <StarRating rating={userRating ? userRating.rate : undefined} />
+            </div>
+          )}
         </div>
 
         <div className="cocktail__right-col">
           <h3 className="cocktail__title">{cocktail.name}</h3>
           <p className="cocktail__rating">
-            <strong>Rating -</strong> 4.5 (2 votes)
+            <strong>Rating -</strong>{' '}
+            {cocktail.ratings.length > 0
+              ? (
+                  cocktail.ratings.reduce((acc, value) => acc + value.rate, 0) /
+                  cocktail.ratings.length
+                ).toFixed(2)
+              : 0}{' '}
+            ({cocktail.ratings.length} votes)
           </p>
           <span>
             <strong>Ingredients:</strong>
           </span>
-          <ul className="ingredients-list">
-            {cocktail.ingredients.map((ing, idx) => (
-              <li className="ingredients-list__item" key={idx}>
-                {ing.name} - ({ing.amount})
-              </li>
-            ))}
-          </ul>
+          <AnimatePresence>
+            <motion.ul
+              className="ingredients-list"
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              variants={variants}
+            >
+              {cocktail.ingredients.map((ing, idx) => (
+                <motion.li className="ingredients-list__item" key={idx} variants={variants}>
+                  {ing.name} - ({ing.amount})
+                </motion.li>
+              ))}
+            </motion.ul>
+          </AnimatePresence>
         </div>
 
         {user && user.role === 'admin' && (

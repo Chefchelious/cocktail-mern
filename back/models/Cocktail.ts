@@ -37,6 +37,21 @@ const CocktailSchema = new Schema<ICocktail>({
       },
     },
   ],
+  ratings: [
+    {
+      author: {
+        type: mongoose.Types.ObjectId,
+        ref: 'User',
+        required: true,
+      },
+      rate: {
+        type: Number,
+        required: true,
+        min: 0,
+        max: 5,
+      },
+    },
+  ],
 });
 
 const Cocktail = mongoose.model('Cocktail', CocktailSchema);

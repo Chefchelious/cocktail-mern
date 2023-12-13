@@ -5,6 +5,7 @@ import {
   deleteCocktail,
   fetchCocktails,
   fetchOneCocktail,
+  rateCocktail,
   toggleCocktailPublished,
 } from './cocktailsThunk.ts';
 import { IApiCocktail, ICocktail } from '../../types';
@@ -17,6 +18,7 @@ interface CocktailsState {
   fetchOneLoading: boolean;
   publishedLoading: boolean;
   deleteLoading: boolean;
+  ratingLoading: boolean;
 }
 
 const initialState: CocktailsState = {
@@ -27,12 +29,17 @@ const initialState: CocktailsState = {
   fetchOneLoading: false,
   publishedLoading: false,
   deleteLoading: false,
+  ratingLoading: false,
 };
 
 const cocktailSlice = createSlice({
   name: 'cocktails',
   initialState,
-  reducers: {},
+  reducers: {
+    setCocktail: (state) => {
+      state.oneCocktail = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchCocktails.pending, (state) => {
@@ -60,6 +67,9 @@ const cocktailSlice = createSlice({
     builder
       .addCase(fetchOneCocktail.pending, (state) => {
         state.fetchOneLoading = true;
+        state.oneCocktail = null; // либо использовать setCocktail reducer
+        // потому что в стейте остается предыдущий коктейль из-за этого анимация framer motion
+        //ведет себя не корректно, остаточность предыдущего котейля в стейте каким-то образом влияет на анимацию
       })
       .addCase(fetchOneCocktail.fulfilled, (state, { payload: cocktail }) => {
         state.fetchOneLoading = false;
@@ -90,10 +100,22 @@ const cocktailSlice = createSlice({
       .addCase(deleteCocktail.rejected, (state) => {
         state.deleteLoading = false;
       });
+
+    builder
+      .addCase(rateCocktail.pending, (state) => {
+        state.ratingLoading = true;
+      })
+      .addCase(rateCocktail.fulfilled, (state) => {
+        state.ratingLoading = false;
+      })
+      .addCase(rateCocktail.rejected, (state) => {
+        state.ratingLoading = false;
+      });
   },
 });
 
 export const cocktailsReducer = cocktailSlice.reducer;
+export const { setCocktail } = cocktailSlice.actions;
 export const selectCocktails = (state: RootState) => state.cocktails.items;
 export const selectCocktailsLoading = (state: RootState) => state.cocktails.fetchLoading;
 export const selectCreateCocktailLoading = (state: RootState) => state.cocktails.createLoading;

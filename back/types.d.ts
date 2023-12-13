@@ -13,6 +13,11 @@ export interface IIngredient {
   amount: string;
 }
 
+export interface IRating {
+  author: Object._id;
+  rate: number;
+}
+
 export interface ICocktail {
   author: Object._id;
   name: string;
@@ -20,4 +25,5 @@ export interface ICocktail {
   recipe: string;
   isPublished: boolean;
   ingredients: IIngredient[];
+  ratings: IRating[];
 }

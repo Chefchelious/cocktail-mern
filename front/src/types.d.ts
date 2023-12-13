@@ -50,11 +50,17 @@ export interface ICocktail {
 export interface IApiCocktail extends ICocktail {
   recipe: string;
   ingredients: IIngredient[];
+  ratings: IRating[];
 }
 
 export interface IIngredient {
   name: string;
   amount: string;
+}
+
+export interface IRating {
+  author: string;
+  rate: number;
 }
 
 export interface ICocktailMutation {
